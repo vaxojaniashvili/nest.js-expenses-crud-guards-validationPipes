@@ -1,12 +1,14 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpException,
   HttpStatus,
   Param,
   ParseIntPipe,
   Post,
+  Put,
 } from '@nestjs/common';
 import { ExpensesService } from './expenses.service';
 import { ExpensesDto } from './dtos/Expenses.dtos';
@@ -20,7 +22,7 @@ export class ExpensesController {
     if (expensesData) {
       return expensesData;
     } else {
-      throw new HttpException('User not fond', HttpStatus.NOT_FOUND);
+      throw new HttpException('Expense not found', HttpStatus.NOT_FOUND);
     }
   }
 
@@ -30,7 +32,7 @@ export class ExpensesController {
     if (expenseById) {
       return expenseById;
     } else {
-      throw new HttpException('User not fond', HttpStatus.NOT_FOUND);
+      throw new HttpException('Expense not found', HttpStatus.NOT_FOUND);
     }
   }
 
@@ -40,7 +42,28 @@ export class ExpensesController {
     if (addExpenses) {
       return addExpenses;
     } else {
-      throw new HttpException('User not fond', HttpStatus.NOT_FOUND);
+      throw new HttpException('Expense not found', HttpStatus.NOT_FOUND);
+    }
+  }
+  @Put('/update/:id')
+  updateExpense(
+    @Param('id', ParseIntPipe) id: ExpensesDto,
+    @Body() body: ExpensesDto,
+  ) {
+    const updateExpense = this.expensesService.updateExpense(id, body);
+    if (updateExpense) {
+      return updateExpense;
+    } else {
+      throw new HttpException('Expense not found', HttpStatus.NOT_FOUND);
+    }
+  }
+  @Delete('/delete/:id')
+  deleteExpense(@Param('id', ParseIntPipe) id: ExpensesDto) {
+    const deleteExpense = this.expensesService.deleteExpense(id);
+    if (deleteExpense) {
+      return deleteExpense;
+    } else {
+      throw new HttpException('Expense not found', HttpStatus.NOT_FOUND);
     }
   }
 }

@@ -12,6 +12,7 @@ import {
 } from '@nestjs/common';
 import { ExpensesService } from './expenses.service';
 import { ExpensesDto } from './dtos/Expenses.dtos';
+import { DataTypes } from 'src/types/common';
 
 @Controller('expenses')
 export class ExpensesController {
@@ -27,7 +28,7 @@ export class ExpensesController {
   }
 
   @Get('/:id')
-  getExpenseById(@Param('id', ParseIntPipe) id: ExpensesDto) {
+  getExpenseById(@Param('id', ParseIntPipe) id: DataTypes) {
     const expenseById = this.expensesService.getExpenseById(id);
     if (expenseById) {
       return expenseById;
@@ -47,7 +48,7 @@ export class ExpensesController {
   }
   @Put('/update/:id')
   updateExpense(
-    @Param('id', ParseIntPipe) id: ExpensesDto,
+    @Param('id', ParseIntPipe) id: DataTypes,
     @Body() body: ExpensesDto,
   ) {
     const updateExpense = this.expensesService.updateExpense(id, body);
@@ -58,7 +59,7 @@ export class ExpensesController {
     }
   }
   @Delete('/delete/:id')
-  deleteExpense(@Param('id', ParseIntPipe) id: ExpensesDto) {
+  deleteExpense(@Param('id', ParseIntPipe) id: DataTypes) {
     const deleteExpense = this.expensesService.deleteExpense(id);
     if (deleteExpense) {
       return deleteExpense;

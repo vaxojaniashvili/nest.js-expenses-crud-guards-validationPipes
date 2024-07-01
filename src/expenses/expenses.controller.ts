@@ -9,14 +9,18 @@ import {
   ParseIntPipe,
   Post,
   Put,
+  UseGuards,
 } from '@nestjs/common';
 import { ExpensesService } from './expenses.service';
 import { ExpensesDto } from './dtos/Expenses.dtos';
 import { DataTypes } from 'src/types/common';
+import { ExpensesGuard } from './expenses.guard';
+import { ApiKeyGuard } from './api-key.guard';
 
 @Controller('expenses')
 export class ExpensesController {
   constructor(private readonly expensesService: ExpensesService) {}
+  @UseGuards(ApiKeyGuard)
   @Get()
   GetExpenses() {
     const expensesData = this.expensesService.getExpenses();
@@ -36,7 +40,7 @@ export class ExpensesController {
       throw new HttpException('Expense not found', HttpStatus.NOT_FOUND);
     }
   }
-
+  @UseGuards(ExpensesGuard)
   @Post('/add')
   addExpenses(@Body() body: ExpensesDto) {
     const addExpenses = this.expensesService.addExpenses(body);
@@ -46,6 +50,7 @@ export class ExpensesController {
       throw new HttpException('Expense not found', HttpStatus.NOT_FOUND);
     }
   }
+  @UseGuards(ExpensesGuard)
   @Put('/update/:id')
   updateExpense(
     @Param('id', ParseIntPipe) id: DataTypes,
@@ -58,6 +63,7 @@ export class ExpensesController {
       throw new HttpException('Expense not found', HttpStatus.NOT_FOUND);
     }
   }
+  @UseGuards(ExpensesGuard)
   @Delete('/delete/:id')
   deleteExpense(@Param('id', ParseIntPipe) id: DataTypes) {
     const deleteExpense = this.expensesService.deleteExpense(id);

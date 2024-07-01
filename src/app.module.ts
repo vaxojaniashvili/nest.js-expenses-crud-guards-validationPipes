@@ -9,7 +9,7 @@ import { ApiKeyGuard } from './expenses/api-key.guard';
   providers: [
     {
       provide: APP_GUARD,
-      useClass: ApiKeyGuard,
+      useClass: ApiKeyGuard || ExpenseGuard,
     },
   ],
   controllers: [],

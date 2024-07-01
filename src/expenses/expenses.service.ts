@@ -11,7 +11,7 @@ export class ExpensesService {
       return this.data;
     }
   }
-  getExpenseById(id: DataTypes) {
+  getExpenseById(id: number) {
     const findExpense = this.data.find((u) => u.id === id);
     if (!findExpense) {
       throw new HttpException('Expense not found', HttpStatus.NOT_FOUND);
@@ -35,7 +35,7 @@ export class ExpensesService {
       return newExpense;
     }
   }
-  updateExpense(id: DataTypes, body: DataTypes) {
+  updateExpense(id: number, body: DataTypes) {
     const { title, description, price } = body;
     const findExpense = this.data.findIndex((u) => u.id === id);
     const updatedUser = {
@@ -52,7 +52,7 @@ export class ExpensesService {
       return updatedUser;
     }
   }
-  deleteExpense(id: DataTypes) {
+  deleteExpense(id: number) {
     const findExpense = this.data.findIndex((u) => u.id === id);
     if (!findExpense) {
       throw new HttpException('User not found', HttpStatus.NOT_FOUND);

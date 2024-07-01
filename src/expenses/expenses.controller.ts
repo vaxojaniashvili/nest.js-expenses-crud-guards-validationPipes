@@ -13,8 +13,7 @@ import {
 } from '@nestjs/common';
 import { ExpensesService } from './expenses.service';
 import { ExpensesDto } from './dtos/Expenses.dtos';
-import { DataTypes } from 'src/types/common';
-import { ExpensesGuard } from './expenses.guard';
+import { ExpenseGuard } from './expenses.guard';
 import { ApiKeyGuard } from './api-key.guard';
 
 @Controller('expenses')
@@ -32,7 +31,7 @@ export class ExpensesController {
   }
 
   @Get('/:id')
-  getExpenseById(@Param('id', ParseIntPipe) id: DataTypes) {
+  getExpenseById(@Param('id', ParseIntPipe) id) {
     const expenseById = this.expensesService.getExpenseById(id);
     if (expenseById) {
       return expenseById;
@@ -40,7 +39,7 @@ export class ExpensesController {
       throw new HttpException('Expense not found', HttpStatus.NOT_FOUND);
     }
   }
-  @UseGuards(ExpensesGuard)
+  @UseGuards(ExpenseGuard)
   @Post('/add')
   addExpenses(@Body() body: ExpensesDto) {
     const addExpenses = this.expensesService.addExpenses(body);
@@ -50,12 +49,9 @@ export class ExpensesController {
       throw new HttpException('Expense not found', HttpStatus.NOT_FOUND);
     }
   }
-  @UseGuards(ExpensesGuard)
+  @UseGuards(ExpenseGuard)
   @Put('/update/:id')
-  updateExpense(
-    @Param('id', ParseIntPipe) id: DataTypes,
-    @Body() body: ExpensesDto,
-  ) {
+  updateExpense(@Param('id', ParseIntPipe) id, @Body() body: ExpensesDto) {
     const updateExpense = this.expensesService.updateExpense(id, body);
     if (updateExpense) {
       return updateExpense;
@@ -63,9 +59,9 @@ export class ExpensesController {
       throw new HttpException('Expense not found', HttpStatus.NOT_FOUND);
     }
   }
-  @UseGuards(ExpensesGuard)
+  @UseGuards(ExpenseGuard)
   @Delete('/delete/:id')
-  deleteExpense(@Param('id', ParseIntPipe) id: DataTypes) {
+  deleteExpense(@Param('id', ParseIntPipe) id) {
     const deleteExpense = this.expensesService.deleteExpense(id);
     if (deleteExpense) {
       return deleteExpense;
